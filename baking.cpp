@@ -1,4 +1,29 @@
+// Bank Management System in C++
+// This repository contains a simple Bank Management System implemented in C++. The system allows you to open new bank accounts, assign unique account numbers to customers, and manage customer details such as name, age, sex, and address. The program ensures that each account number is unique by using all possible permutations of the digits 0-9.
 
+// Features
+// Customer Management: Add new customers with details like name, age, sex, village, district, and state.
+// Unique Account Number Generation: Generates a unique 10-digit account number for each customer using permutations of digits 0-9. This ensures that no two customers have the same account number.
+// Account Operations: Basic menu options are included to open new accounts, check balance, deposit money, withdraw money, and edit customer details (additional functionalities can be expanded).
+// Code Overview
+// Classes
+// Customer: Stores customer details such as name, age, sex, village, district, and state.
+
+// Bank:
+
+// Manages the list of customers and account numbers.
+// Contains functionality to generate unique 10-digit account numbers using permutations.
+// Performs operations like opening a new account, storing customer details, and associating an account number with each new customer.
+// Account Number Generation
+// The Bank class generates a unique account number by creating all permutations of the digits 0-9. Once a number is used, it is marked and will not be used again for another customer.
+
+// Helper function to generate all 10-digit permutations from digits 0-9
+// void generateAccountNumbers() {
+//     string digits = "0123456789";
+//     do {
+//         account_numbers.push_back(digits);
+//     } while (next_permutation(digits.begin(), digits.end()));
+// }
 #include<iostream>
 #include<vector>
 #include<set>
