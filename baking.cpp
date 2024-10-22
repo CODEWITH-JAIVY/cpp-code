@@ -1,3 +1,4 @@
+
 // Bank Management System in C++
 // This repository contains a simple Bank Management System implemented in C++. The system allows you to open new bank accounts, assign unique account numbers to customers, and manage customer details such as name, age, sex, and address. The program ensures that each account number is unique by using all possible permutations of the digits 0-9.
 
@@ -12,25 +13,15 @@
 // Bank:
 
 // Manages the list of customers and account numbers.
-// Contains functionality to generate unique 10-digit account numbers using permutations.
-// Performs operations like opening a new account, storing customer details, and associating an account number with each new customer.
-// Account Number Generation
-// The Bank class generates a unique account number by creating all permutations of the digits 0-9. Once a number is used, it is marked and will not be used again for another customer.
-
-// Helper function to generate all 10-digit permutations from digits 0-9
-// void generateAccountNumbers() {
-//     string digits = "0123456789";
-//     do {
-//         account_numbers.push_back(digits);
-//     } while (next_permutation(digits.begin(), digits.end()));
-// }
 #include<iostream>
 #include<vector>
 #include<set>
 #include<string>
-#include<algorithm>  // For std::next_permutation
+#include<map>
+
 using namespace std;
 
+// Customer class definition
 class Customer {
 private:
     string Name;
@@ -39,16 +30,30 @@ private:
     string Vill;
     string Dist;
     string State;
-    long int Blance ;
+    long int Balance;
 
 public:
-    Customer(string name, int age, string sex, string vill, string dist, string state) {
+ // default constructor 
+     Customer() {
+        Name = "";
+        Age = 0;
+        Sex = "";
+        Vill = "";
+        Dist = "";
+        State = "";
+        Balance = 0;
+    }
+
+
+
+    Customer(string name, int age, string sex, string vill, string dist, string state, long int balance=0 ) {
         Name = name;
         Age = age;
         Sex = sex;
         Vill = vill;
         Dist = dist;
         State = state;
+        Balance = balance;
     }
 
     string get_Name() { return Name; }
@@ -57,39 +62,30 @@ public:
     string get_Vill() { return Vill; }
     string get_Dist() { return Dist; }
     string get_State() { return State; }
-    long int get_blance() { return Blance ; }
+    long int get_Balance() { return Balance; }
+    void set_Balance(long int newBalance) { Balance = newBalance; }
 };
 
 // Banking operation class  
 class Bank {
 private:
-    vector<Customer> customers;
-    vector<string> account_numbers;
-    set<string> used_account_numbers;
+    vector<Customer> customers;   // To store new customers
+    int account_counter;          // Counter to ensure unique account numbers
+    set<string> used_account_numbers;  // Set of used account numbers
+    map<string, long int> Deposited_Balance; // Map to store account numbers and their balances
+    map<string, Customer> customer_accounts; // Map to link account numbers to Customer objects
 
-    // Helper function to generate all 10-digit permutations from digits 0-9
-    void generateAccountNumbers() {
-        string digits = "0123456789";
-        do {
-            account_numbers.push_back(digits);
-        } while (next_permutation(digits.begin(), digits.end()));
+    // Create a new unique 10-digit account number using a counter
+    string Account_Number_provider() {
+        string account_number = to_string(4044068470 + account_counter);  // Ensure 10-digit format
+        account_counter++;
+        used_account_numbers.insert(account_number);  // Mark as used
+        return account_number;
     }
 
 public:
     Bank() {
-        generateAccountNumbers();  // Generate all account numbers once
-    }
-
-    // Create a new unique 10-digit account number
-    string Account_Number_provider() {
-        for (const string& acc_num : account_numbers) {
-            if (used_account_numbers.find(acc_num) == used_account_numbers.end()) {
-                // Mark the account number as used
-                used_account_numbers.insert(acc_num);
-                return acc_num;
-            }
-        }
-        return "";  // If all account numbers are used
+        account_counter = 0;  // Initialize account number counter
     }
 
     // Create a new account for a customer
@@ -100,6 +96,7 @@ public:
         string Vill;
         string Dist;
         string State;
+        long int balance;
 
         cout << "Enter your name: ";
         cin.ignore();
@@ -114,48 +111,137 @@ public:
         cout << "Enter Village, District, State: ";
         cin >> Vill >> Dist >> State;
 
+        cout << "Enter initial deposit amount: ";
+        cin >> balance;
+
         // Create a new customer
-        Customer newCustomer(Name, Age, Sex, Vill, Dist, State);
+        Customer newCustomer(Name, Age, Sex, Vill, Dist, State, balance);
         customers.push_back(newCustomer);
 
         // Generate account number
         string account_number = Account_Number_provider();
-        if (account_number.empty()) {
-            cout << "All account numbers are exhausted!" << endl;
+        cout << Name << "'s account number is " << account_number << endl;
+        Deposited_Balance[account_number] = balance;
+        customer_accounts[account_number] = newCustomer;
+    }
+
+    // Display current balance for a given account number
+    void current_Balance() {
+        string account_number;
+        cout << "Enter account number: ";
+        cin >> account_number;
+
+        if (Deposited_Balance.find(account_number) != Deposited_Balance.end()) {
+            cout << "Current balance for account " << account_number << " is: " << Deposited_Balance[account_number] << endl;
         } else {
-            cout << Name << "'s account number is " << account_number << endl;
-        }  
-
-        // add mony at the time of open account in account  new account number  
-      }
-         
-         // 
-    void   current_Blance() {
-     cout<<"Code under development " << endl ;
-     // show current blance in account   with account number and password  
-    
+            cout << "Account number not found!" << endl;
+        }
     }
-    int deposite_blance() {
-        // depostite blance if  blance is sufficiant other wise show not suffi
-        cout<< " Blance cheking code is under progress " ;
-    }
-int withdrow_blance() {
-    // blance with drow 
-    cout<< "Blance withdrow is under proccess"<< endl  ;
 
-}
-   void get_DetailOF_cutomer(){
-    // display detail of customer 
-    //  when to be searched with account number 
-    cout<< " Get detail of customer " ;
-    // only authorised persion can see  deatil of all customer 
-   }
-      
-      int Edit_customerAccount(){
-        cout<< "updatetion patr code is under process " ;
-        // only authorised persion can change detail of customer 
-        // createa  password  if pass word is enter correct than allow to update 
-      }
+    // Deposit balance into a customer’s account
+    void deposit_Balance() {
+        string account_number;
+        long int deposit;
+
+        cout << "Enter account number: ";
+        cin >> account_number;
+
+        if (Deposited_Balance.find(account_number) != Deposited_Balance.end()) {
+            cout << "Enter deposit amount: ";
+            cin >> deposit;
+            Deposited_Balance[account_number] += deposit;
+            cout << "New balance is: " << Deposited_Balance[account_number] << endl;
+        } else {
+            cout << "Account number not found!" << endl;
+        }
+    }
+
+    // Withdraw balance from a customer’s account
+    void withdraw_Balance() {
+        string account_number;
+        long int withdrawal;
+
+        cout << "Enter account number: ";
+        cin >> account_number;
+
+        if (Deposited_Balance.find(account_number) != Deposited_Balance.end()) {
+            cout << "Enter withdrawal amount: ";
+            cin >> withdrawal;
+
+            if (Deposited_Balance[account_number] >= withdrawal) {
+                Deposited_Balance[account_number] -= withdrawal;
+                cout << "New balance is: " << Deposited_Balance[account_number] << endl;
+            } else {
+                cout << "Insufficient balance!" << endl;
+            }
+        } else {
+            cout << "Account number not found!" << endl;
+        }
+    }
+
+    // Get details of a customer based on account number
+    void get_Details_Of_Customer() {
+        string account_number;
+        cout << "Enter account number: ";
+        cin >> account_number;
+
+        if (customer_accounts.find(account_number) != customer_accounts.end()) {
+            Customer customer = customer_accounts[account_number];
+            cout << "Customer Details:\n";
+            cout << "Name: " << customer.get_Name() << "\n";
+            cout << "Age: " << customer.get_Age() << "\n";
+            cout << "Sex: " << customer.get_Sex() << "\n";
+            cout << "Village: " << customer.get_Vill() << "\n";
+            cout << "District: " << customer.get_Dist() << "\n";
+            cout << "State: " << customer.get_State() << "\n";
+            cout << "Balance: " << Deposited_Balance[account_number] << "\n";
+        } else {
+            cout << "Account number not found!" << endl;
+        }
+    }
+
+    // Edit customer details based on account number (with password protection)
+    void edit_CustomerAccount() {
+        string account_number;
+        string password = "admin"; // Password protection for editing
+
+        cout << "Enter admin password to edit account: ";
+        string input_password;
+        cin >> input_password;
+
+        if (input_password == password) {
+            cout << "Enter account number: ";
+            cin >> account_number;
+
+            if (customer_accounts.find(account_number) != customer_accounts.end()) {
+                string new_name, new_sex, new_vill, new_dist, new_state;
+                int new_age;
+
+                cout << "Enter new name: ";
+                cin.ignore();
+                getline(cin, new_name);
+
+                cout << "Enter new age: ";
+                cin >> new_age;
+
+                cout << "Enter new sex: ";
+                cin >> new_sex;
+
+                cout << "Enter new village, district, state: ";
+                cin >> new_vill >> new_dist >> new_state;
+
+                // Update customer details
+                Customer &customer = customer_accounts[account_number];
+                customer = Customer(new_name, new_age, new_sex, new_vill, new_dist, new_state, Deposited_Balance[account_number]);
+
+                cout << "Customer details updated!" << endl;
+            } else {
+                cout << "Account number not found!" << endl;
+            }
+        } else {
+            cout << "Incorrect password!" << endl;
+        }
+    }
 };
 
 int main() {
@@ -178,32 +264,25 @@ int main() {
         case 1:
             bank.OpenNewAccount();
             break;
-
-        
-            case 2:
-                bank.current_Blance();
-                break;
-
-            case 3:
-                bank.deposite_blance();
-                break;
-
-            case 4:
-                bank.withdrow_blance();
-                break;
-
-            case 5:
-                bank.get_DetailOF_cutomer();
-                break;
-
-            case 6:
-                bank.Edit_customerAccount();
-                break;
+        case 2:
+            bank.current_Balance();
+            break;
+        case 3:
+            bank.deposit_Balance();
+            break;
+        case 4:
+            bank.withdraw_Balance();
+            break;
+        case 5:
+            bank.get_Details_Of_Customer();
+            break;
+        case 6:
+            bank.edit_CustomerAccount();
+            break;
         case 7:
             cout << "Exiting..." << endl;
             choice = 0;
             break;
-
         default:
             cout << "Select a valid operation." << endl;
             break;
