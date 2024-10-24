@@ -1,0 +1,8 @@
+we dive into solving the popular LeetCode problem of checking if a string or number is a palindrome using C++. A palindrome is a sequence of characters that reads the same backward as forward. We'll start by understanding the basic concept of palindromes, followed by a step-by-step approach to solving the problem in C++. I'll explain the logic clearly with examples and then move on to writing the C++ code.
+
+Topics Covered:
+What is a palindrome?
+Approach to checking if a string or number is a palindrome.
+Time complexity analysis.
+Edge cases like an empty string or single character input.
+Practical coding demonstration in C++.
