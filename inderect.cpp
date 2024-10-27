@@ -1,14 +1,11 @@
 #include<iostream>
 using namespace std ;
- int factoril (int n   ) ; // prototype 
-int  factoril1( int m ) {
-     return m * factoril(m-1) ;
-   }
- int factoril( int n  ) {
+
+ int factoril( int m  ) {
     if ( n == 1  ) {
         return 1 ;
     }
-     factoril1( n ) ;
+     return m * factoril(m-1) ;
  }
 
 int main() {
