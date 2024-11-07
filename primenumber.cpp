@@ -4,19 +4,16 @@ using namespace std  ;
 bool prime(int num) {
    //  int count =  0  ;
     for(int i= 2  ; i<= num/2 ; i++){
-
-      if ( num  % i == 0 ){
-        // count ++  ;
+ // for( int i = 1  ; i< num  ; i++ ) {  // alsp this for loop is valid  for this funtion 
+       
+      if ( num  % i == 0 ) 
         return false ;
       }
-      
     }
     return true  ; 
 }
 
- int gcd( int a , int b ) {
-    return __gcd( a , b ) ;
- }
+ 
 int main() {
     int num   ;
     cout<<"Enter number to check number is prime or not  " ;
@@ -28,8 +25,5 @@ int main() {
     else {
         cout<< "Not prime number\n " ;
     }
-
-     int result = gcd( 10 ,20 ) ;
-     cout<<"Gsc of two number " << result  ; 
     return  0  ;
 } 
