@@ -14,3 +14,18 @@ int main() {
 
      return  0  ;
 }
+
+// ❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️
+// second approach 
+// #include <iostream>
+// #include <numeric> // Required for std::gcd
+
+// int main() {
+//     int num1, num2;
+//     std::cout << "Enter two numbers: ";
+//     std::cin >> num1 >> num2;
+    
+//     // Using std::gcd to find the GCD of num1 and num2
+//     std::cout << "GCD of " << num1 << " and " << num2 << " is " << std::gcd(num1, num2) << std::endl;
+//     return 0;
+// }
